@@ -1,12 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>作业</title>
+    <title>短信发送页面</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/font-awesome.min.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/element-plus/dist/index.full.js"></script>
+    <style>
+        #app {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+      .el-input {
+            width: 300px;
+        }
+
+        h1 {
+            font-family: '黑体';
+            font-weight: bold;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            margin-top: 15px;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Welcome to My Website</h1>
-    <p>This is a simple HTML template.</p>
+    <div id="app">
+        <h1>短信发送界面</h1>
+        <el-input v-model="yourName" placeholder="请输入您的姓名" clearable style="margin-bottom: 10px;"></el-input>
+        <el-input v-model="phoneNumber" placeholder="请输入手机号码" clearable></el-input>
+        <el-button type="primary" @click="sendSms">
+            <i class="el-icon-s-promotion"></i>发送短信
+        </el-button>
+    </div>
+
+    <script>
+        const { createApp, ref } = Vue;
+        const { ElInput, ElButton, ElMessageBox } = ElementPlus;
+
+        createApp({
+            components: {
+                ElInput,
+                ElButton
+            },
+            setup() {
+                const yourName = ref('');
+                const phoneNumber = ref('');
+
+                const sendSms = () => {
+                    // 验证姓名和电话号码是否为空
+                    if (!yourName.value ||!phoneNumber.value) {
+                        ElMessageBox.alert('请输入姓名和手机号码', '提示', {
+                            confirmButtonText: '确定',
+                            type: 'warning'
+                        });
+                        return;
+                    }
+
+                    // 验证电话号码位数是否正确（简单验证为11位数字，可根据实际情况调整更严格的验证逻辑）
+                    const phoneNumberRegex = /^\d{11}$/;
+                    if (!phoneNumberRegex.test(phoneNumber.value)) {
+                        ElMessageBox.alert('请输入正确的电话号码', '提示', {
+                            confirmButtonText: '确定',
+                            type: 'warning'
+                        });
+                        return;
+                    }
+
+                    // 获取当前时间，格式化为8位字符（示例格式，可根据实际需求调整精确程度）
+                    const currentTime = new Date().toLocaleTimeString().replace(/[^\d:]/g, '').substring(0, 8);
+
+                    const params = {
+                        "SpCode": "265647",
+                        "LoginName": "dz_xjj",
+                        "Password": "7454c44db6b4291015bb992101ce895d",
+                        "MessageContent": yourName.value + "您好,您于" + currentTime + "发起的的短信请求已发送成功,恭喜!",
+                        "模板Id": "1171012055032",
+                        "SerialNumber": "此处填入20位唯一的数字流水号",  // 需生成一个20位唯一数字的流水号填入
+                        "UserNumber": phoneNumber.value,
+                        "f": "1"
+                    };
+
+                    let url = "https://www.dzcjjt.com/python/sms?";
+                    for (const key in params) {
+                        url += key + "=" + encodeURIComponent(params[key]) + "&";
+                    }
+                    url = url.slice(0, -1);  // 去掉最后一个多余的&
+
+                    // 创建XMLHttpRequest对象，用于发起GET请求（实际中可能受浏览器跨域限制无法直接成功）
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('GET', url, true);
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            const result = xhr.responseText;
+                            if (result === "0") {
+                                alert("发送短信成功");
+                            } else {
+                                alert("发送短信失败，错误码: " + result);
+                            }
+                        }
+                    };
+                    xhr.send();
+                };
+
+                return {
+                    yourName,
+                    phoneNumber,
+                    sendSms
+                };
+            }
+        }).mount('#app');
+    </script>
 </body>
+
 </html>
