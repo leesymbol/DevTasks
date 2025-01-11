@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+      .container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+      .history-info {
+            margin-top: 20px;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>历史上的今天</h1>
+        <div id="history-info" class="history-info"></div>
+        <a href="weather.html">跳转到天气预报</a>
+    </div>
+
+    <script>
+        // 在这里替换为你在聚合数据申请到的APPKEY
+        const APPKEY = "d7e7b65bed07fe8b0d1031d75b35255d";
+
+        // 发起API请求获取历史上的今天数据
+        async function getHistoryOnToday() {
+            const month = new Date().getMonth() + 1;
+            const day = new Date().getDate();
+            const date = month+"/"+day;
+            console.log(date)
+            const apiUrl = `http://v.juhe.cn/todayOnhistory/queryEvent?key=${APPKEY}&date=${date}`;
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                if (data.result.code === 200) {
+                    displayHistory(data.result.data);
+                } else {
+                    console.error("获取历史数据失败：", data.result.reason);
+                    document.getElementById("history-info").innerHTML = "获取历史上的今天数据失败，请稍后重试。";
+                }
+            } catch (error) {
+                console.error("网络请求出现错误：", error);
+                document.getElementById("history-info").innerHTML = "网络出现问题，请检查网络连接后重试。";
+            }
+        }
+
+        // 展示历史数据到HTML页面
+        function displayHistory(data) {
+            const historyInfoDiv = document.getElementById("history-info");
+            let historyDataHTML = "";
+            data.forEach(item => {
+                historyDataHTML += `
+                    <p><strong>事件：</strong> ${item.title}</p>
+                    <p><strong>年份：</strong> ${item.year}</p>
+                    <p><strong>详情：</strong> ${item.des}</p>
+                    <hr>
+                `;
+            });
+            historyInfoDiv.innerHTML = historyDataHTML;
+        }
+
+        // 页面加载完成后调用获取历史数据的函数
+        window.onload = getHistoryOnToday;
+    </script>
+</body>
+</html>
