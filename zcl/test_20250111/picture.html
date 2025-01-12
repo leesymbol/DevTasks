@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二次元图片</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+      .image-container {
+            width: 97%;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        img {
+            max-width: 97%;
+            height: auto;
+            margin-top: 20px;
+            display: block; /* 使图片成为块级元素，便于居中 */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        div#div1 {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            width: 97%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="div1">
+        <h1>欢迎来到二次元图片网页</h1>
+    </div>
+    <div class="image-container" id="image-container"></div>
+    <script>
+        // 发起API请求获取二次元图片数据
+        async function getAcgImages() {
+            const apiUrl = "https://api.vvhan.com/api/wallpaper/acg?type=json";
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                if (data.success) {
+                    console.log("请求成功");
+                    displayImages(data);
+                } else {
+                    console.error("获取图片数据失败：", data.msg);
+                    document.getElementById("image-container").innerHTML = "获取二次元图片数据失败，请稍后重试。";
+                }
+            } catch (error) {
+                console.error("网络请求出现错误：", error);
+                document.getElementById("image-container").innerHTML = "网络出现问题，请检查网络连接后重试。";
+            }
+        }
+
+        // 展示图片到HTML页面
+        function displayImages(images) {
+            console.log("zhanshiyemian");
+            const imageContainer = document.getElementById("image-container");
+            const imageShow = `
+                <img src="${images.url}">
+            `;
+            imageContainer.innerHTML = imageShow;
+        }
+
+        // 页面加载完成后调用获取图片数据的函数
+        window.onload = getAcgImages;
+    </script>
+</body>
+
+</html>
