@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>德州天气预报</title>
     <style>
-        body {
+         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             margin: 0;
@@ -33,44 +33,25 @@
 </head>
 <body>
     <div class="container">
-        <h1>天气预报</h1>
+        <h1>德州今日天气预报</h1>
         <div id="weather-info" class="weather-info"></div>
-        <a href="today.html">跳转到历史上的今天</a>
+        <a href="pic.html">跳转到二次元图片</a>
     </div>
 
     <script>
-       // 在这里替换为你在聚合数据申请到的APPKEY
-        // const APPKEY = "05f97a16c90edf3ca90fefb0c8f4f0f1";
-        // 示例城市，可以替换为你想要查询天气的城市名称
-        // const city = "北京";
-        // const apiUrl = `http://apis.juhe.cn/simpleWeather/query?key=${APPKEY}&city=${city}`;
-        const apiUrl = `http://apis.juhe.cn/simpleWeather/query`;
-        const params ={
-            key:"05f97a16c90edf3ca90fefb0c8f4f0f1",
-            city:"德州"
-        }
-        // 发起API请求获取天气数据
+        // 发起API请求获取德州天气数据
         async function getWeather() {
-            
+            const city = "德州";
+            const apiUrl = `https://api.vvhan.com/api/weather?city=${city}`;
             try {
-                 // 设置请求头，比如指定 Content-Type 为 JSON 格式
-                const headers = {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                };
-                const response = await fetch(apiUrl, {
-                    method: "POST",
-                    headers: headers,
-                    body: JSON.stringify(params)
-                });
-                // const response = await fetch(apiUrl);
+                const response = await fetch(apiUrl);
                 const data = await response.json();
-                console.log(data)
-                // if (data.code === 200) {
-                //     displayWeather(data);
-                // } else {
-                //     console.error("获取天气数据失败：", data.msg);
-                //     document.getElementById("weather-info").innerHTML = "获取天气数据失败，请稍后重试。";
-                // }
+                if (data.success ="true") {
+                    displayWeather(data);
+                } else {
+                    console.error("获取天气数据失败：", data.msg);
+                    document.getElementById("weather-info").innerHTML = "获取德州天气数据失败，请稍后重试。";
+                }
             } catch (error) {
                 console.error("网络请求出现错误：", error);
                 document.getElementById("weather-info").innerHTML = "网络出现问题，请检查网络连接后重试。";
@@ -82,12 +63,12 @@
             const weatherInfoDiv = document.getElementById("weather-info");
             const weatherData = `
                 <p>城市：${data.city}</p>
-                <p>日期：${data.date}</p>
-                <p>天气状况：${data.wea}</p>
-                <p>温度：${data.tem}℃</p>
-                <p>湿度：${data.humidity}%</p>
-                <p>风向：${data.win}</p>
-                <p>风力：${data.win_speed}级</p>
+                <p>日期：${data.data.date}</p>
+                <p>天气状况：${data.data.type}</p>
+                <p>最高温度：${data.data.high}</p>
+                <p>最低温度：${data.data.low}</p>
+                <p>风向：${data.data.fengxiang}</p>
+                <p>风力：${data.data.fengli}</p>
             `;
             weatherInfoDiv.innerHTML = weatherData;
         }
