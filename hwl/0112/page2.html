@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第二个页面 - Web设计练习</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>第二个页面 - 抖音热点</h1>
+    <button id="getDouyinHot">获取抖音热点</button>
+    <ul id="douyinHotList"></ul>
+
+    <a href="index.html">返回首页</a>
+  </div>
+
+  <script>
+    $(document).ready(function() {
+      $('#getDouyinHot').click(function() {
+        $.get('https://api.vvhan.com/api/hotlist/douyinHot', function(response) {
+          console.log('API返回的数据：', response);  // 打印API的返回数据，帮助调试
+
+          if (response.success && Array.isArray(response.data)) {  // 确保返回成功且data是数组
+            const hotList = response.data.map(item => {
+              // 假设每个item有title字段
+              return `<li>${item.title || '无标题'}</li>`;
+            }).join('');
+            
+            $('#douyinHotList').html(hotList);  // 将生成的列表项添加到页面
+          } else {
+            alert('无法获取抖音热点数据');
+          }
+        }).fail(function() {
+          alert('请求失败，请稍后重试');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
