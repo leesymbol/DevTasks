@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CDN Vue Demo</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/element-plus/dist/index.full.js"></script>
+    <script src="./components/hello.js"></script>
+    <script src="./plugins/helloPlugin.js"></script>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" v-cloak>
+       <hello-plugin :msg="msg">
+           <hello></hello>
+       </hello-plugin>  
+    </div>
+    
+    
+    <script>
+        const App={
+            components:{
+                hello:helloComponent()
+            },
+            data(){
+                return{
+                    msg:'Hello Vue'
+                }
+            }
+        }
+        Vue.createApp(App).use(ElementPlus).use(helloPlugin).mount('#app')
+    </script>
+
+
+</body>
+</html>
