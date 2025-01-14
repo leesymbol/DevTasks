@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+        .demo-progress .el-progress--line {
+  margin-bottom: 15px;
+  max-width: 600px;
+}
+    </style>
+</head>
+<body>
+    <div id="app" v-cloak>
+        <el-input v-model="msg" placeholder="please input"></el-input>
+        <h1>{{msg}}</h1>
+        <el-button type="primary" disabled>Primary</el-button>
+        <el-progress :percentage="50" />
+
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/element-plus/dist/index.full.js"></script>
+    <script>
+        const App={
+            data(){
+                return{
+                    msg:'hello vue'
+                }
+            }
+        }
+        Vue.createApp(App).use(ElementPlus).mount('#app')
+    </script>
+   
+</body>
+</html>
