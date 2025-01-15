@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CDN Vue Demo</title>
+ <style>
+  [v-cloak] {
+   display: none;
+  }
+ </style>
+</head>
+<body>
+ <div id="app" v-cloak>
+   <h1>{{ msg }}</h1>
+ </div>
+
+ <script src="https://unpkg.com/element-plus/dist/index.full.js"></script>
+<script>
+   const App = {
+     data() {
+       return {
+         msg:'Hello Vue'
+       }
+     }
+   }
+   Vue.createApp(App).mount('#app')
+ </script>
+</body>
+</html>
