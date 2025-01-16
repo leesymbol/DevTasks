@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>查询网页</title>
+  <style>
+    /* 全局样式 */
+    body {
+      font-family: "Roboto", sans-serif; /* 更换字体为更现代的Roboto字体 */
+      margin: 0;
+      padding: 0;
+      background-color: #f0f8ff; /* 采用淡蓝色的清新背景色 */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    div#div1 {
+      background-color: #add8e6; /* 浅蓝色的头部背景 */
+      color: white;
+      text-align: center;
+      padding: 30px;
+      width: 90%; /* 适当缩小宽度，让两边有更多留白 */
+      margin: 20px auto;
+      border-radius: 10px 10px 0 0; /* 顶部圆角 */
+    }
+
+    div#div2 {
+      background-color: white;
+      color: #333;
+      text-align: center;
+      padding: 30px;
+      width: 90%;
+      margin: 0 auto;
+      border-radius: 0 0 10px 10px; /* 底部圆角 */
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* 增加立体阴影效果 */
+    }
+
+    /* 介绍部分样式 */
+    section#intro {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    section#intro p {
+      margin-bottom: 20px;
+      font-size: 20px;
+      line-height: 1.5; /* 增加行间距，提高可读性 */
+    }
+
+    /* 链接样式 */
+    a {
+      display: inline-block;
+      background-color: #40e0d0; /* 采用清新的青绿色作为链接底色 */
+      color: white;
+      padding: 15px 30px;
+      text-decoration: none;
+      border-radius: 8px;
+      margin-right: 20px;
+      margin-bottom: 15px; /* 增加链接垂直方向的间距 */
+      transition: background-color 0.3s ease, transform 0.2s ease; /* 增加缩放的过渡效果 */
+    }
+
+    a:hover {
+      background-color: #20b2aa; /* 加深悬停时的青绿色 */
+      transform: scale(1.05); /* 悬停时稍微放大链接 */
+    }
+  </style>
+</head>
+
+<body>
+  <div id="div1">
+    <h1>天气和图片展示</h1>
+  </div>
+  <div id="div2">
+    <section id="intro">
+      <p>点击一下按钮，你可以查看天气和二次元图片</p>
+      <a href="weather.html">查看天气</a>
+      <a href="picture.html">查看二次元图片</a>
+    </section>
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>

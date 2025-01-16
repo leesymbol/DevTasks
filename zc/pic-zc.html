@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二次元图片</title>
+    <style>
+         body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+       .container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>二次元图片</h1>
+        <div id="image-container"></div>
+        <a href="weather.html">跳转到德州今日天气预报</a>
+    </div>
+
+
+    <script>
+        // 发起API请求获取二次元图片数据
+        async function getAcgImages() {
+            const apiUrl = "https://api.vvhan.com/api/wallpaper/acg?type=json";
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                if (data.success) {
+                    console.log("请求成功")
+                    displayImages(data);
+                } else {
+                    console.error("获取图片数据失败：", data.msg);
+                    document.getElementById("image-container").innerHTML = "获取二次元图片数据失败，请稍后重试。";
+                }
+            } catch (error) {
+                console.error("网络请求出现错误：", error);
+                document.getElementById("image-container").innerHTML = "网络出现问题，请检查网络连接后重试。";
+            }
+        }
+
+        // 展示图片到HTML页面
+        function displayImages(images) {
+            console.log("zhanshiyemian")
+            const imageContainer = document.getElementById("image-container");
+            const imageShow = `
+                <image src="${images.url}"></image>
+                
+            `;
+            imageContainer.innerHTML = imageShow;
+        }
+
+        // 页面加载完成后调用获取图片数据的函数
+        window.onload = getAcgImages;
+    </script>
+</body>
+</html>

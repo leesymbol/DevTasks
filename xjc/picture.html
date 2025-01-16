@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" width="device-width, initial-scale=1.0">
+    <title>二次元图片</title>
+    <style>
+        /* 整体页面样式 */
+        body {
+            font-family: 'Roboto', sans-serif; /* 更换字体为Roboto，更现代美观 */
+            background-color: #e6f7ff; /* 更改背景颜色为淡蓝色 */
+            margin: 0;
+            padding: 20px; /* 增加页面内边距，避免内容贴边 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 标题栏样式 */
+        div#div1 {
+            background-color: #333;
+            color: #ffcc00; /* 改变文字颜色为黄色 */
+            text-align: center;
+            padding: 20px;
+            width: 97%;
+            margin: 0 auto 30px auto; /* 调整底部外边距，增加与图片容器间距 */
+            font-size: 24px; /* 增大字体大小 */
+            border-radius: 10px; /* 添加圆角效果 */
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
+            transition: transform 0.3s ease; /* 添加鼠标悬停时的缩放动画过渡效果 */
+        }
+
+        div#div1:hover {
+            transform: scale(1.05); /* 鼠标悬停时标题栏放大1.05倍 */
+        }
+
+        /* 图片容器样式 */
+       .image-container {
+            width: 97%;
+            margin: 30px auto; /* 调整顶部外边距，增加与标题栏间距 */
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); /* 增强阴影效果 */
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid #ccc; /* 添加边框 */
+            border-radius: 10px; /* 设置圆角 */
+            overflow: hidden; /* 隐藏超出容器的部分（比如图片动画时的溢出） */
+        }
+
+        /* 图片样式 */
+        img {
+            max-width: 97%;
+            height: auto;
+            margin-top: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            border: 2px solid #f7f7f7; /* 给图片添加白色边框 */
+            transition: opacity 0.5s ease, transform 0.5s ease; /* 添加透明度过渡和缩放过渡效果 */
+        }
+
+        img:hover {
+            opacity: 0.8; /* 鼠标悬停时图片透明度变为0.8 */
+            transform: scale(1.05); /* 鼠标悬停时图片放大1.05倍 */
+        }
+
+        /* 定义图片加载时的淡入动画关键帧 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        img {
+            animation: fadeIn 1s ease; /* 应用淡入动画，持续1秒，缓动效果为ease */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="div1">
+        <h1>欢迎来到二次元图片网页</h1>
+    </div>
+    <div class="image-container" id="image-container"></div>
+    <script>
+        // 发起API请求获取二次元图片数据
+        async function getAcgImages() {
+            const apiUrl = "https://api.vvhan.com/api/wallpaper/acg?type=json";
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                if (data.success) {
+                    console.log("请求成功");
+                    displayImages(data);
+                } else {
+                    console.error("获取图片数据失败：", data.msg);
+                    document.getElementById("image-container").innerHTML = "获取二次元图片数据失败，请稍后重试。";
+                }
+            } catch (error) {
+                console.error("网络请求出现错误：", error);
+                document.getElementById("image-container").innerHTML = "网络出现问题，请检查网络连接后重试。";
+            }
+        }
+
+        // 展示图片到HTML页面
+        function displayImages(images) {
+            const imageContainer = document.getElementById("image-container");
+            const imageShow = `
+                <img src="${images.url}">
+            `;
+            imageContainer.innerHTML = imageShow;
+            const imgElement = imageContainer.querySelector('img');
+            if (imgElement) {
+                imgElement.style.animationPlayState = 'running'; // 手动触发动画播放（如果需要）
+            }
+        }
+
+        // 页面加载完成后调用获取图片数据的函数
+        window.onload = getAcgImages;
+    </script>
+</body>
+
+</html>
